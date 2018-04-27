@@ -1,4 +1,2 @@
 FROM nginx
-
-RUN echo '<h1>Hello Docker!</h1>' > /usr/share/nginx/html/index.html
-
+COPY dist /usr/share/nginx/html
