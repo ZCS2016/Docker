@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  website:
+    image: zcs2016/nginx:website
+    container_name: website
+    networks:
+      - website-net
+    ports:
+      - "8080:80"
+    # depends_on:
+    #   - db
+    #   - app-Server
+
+  db:
+    image: mysql
+    container_name: website-db
+    volumes:
+      - "mysql-vol:/var/lib/mysql"
+    networks:
+      - website-net
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+
+  appServer:
+    image: openjdk
+    container_name: website-appServer
+    volumes:
+      - "app-vol:/home"
+    networks:
+      - website-net
+    ports:
+      - "8090:8080"
+    command: [ "java","-jar","/home/zcslovewen-site-0.0.1-SNAPSHOT.jar" ]
+    # depends_on:
+    #   - db
+
+volumes:
+  mysql-vol:
+  app-vol:
+
+networks: 
+  website-net:
